@@ -8,7 +8,7 @@
 //============================================================================//
 /**
  * @file tdd_code.h
- * @author JMENO PRIJMENI
+ * @author Jakub Mašek
  * 
  * @brief Definice rozhrani prioritni fronty.
  */
