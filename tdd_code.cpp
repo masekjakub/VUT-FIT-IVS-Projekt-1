@@ -8,7 +8,7 @@
 //============================================================================//
 /**
  * @file tdd_code.cpp
- * @author JMENO PRIJMENI
+ * @author Jakub Mašek
  *
  * @brief Implementace metod tridy prioritni fronty.
  */
@@ -32,22 +32,24 @@
 // (tdd_tests.cpp).
 //============================================================================//
 
-PriorityQueue::PriorityQueue(){
-     m_pHead = NULL;
+PriorityQueue::PriorityQueue()
+{
+    m_pHead = NULL;
 }
 
 PriorityQueue::~PriorityQueue()
 {
     struct Element_t *pItem = m_pHead;
-    while (pItem != NULL){
+    while (pItem != NULL)
+    {
         struct Element_t *tmp = pItem->pNext;
-        free(pItem);
+        delete (pItem);
         pItem = tmp;
     }
 }
 
 void PriorityQueue::Insert(int value)
-{   
+{
     /*struct Element_t *pItem,*pPrevItem;
     pItem = m_pHead;
     printf("Curr list");
@@ -60,26 +62,28 @@ void PriorityQueue::Insert(int value)
 
     if (m_pHead == NULL)
     {
-        Element_t *pNewItem = (struct Element_t *)malloc(sizeof(struct Element_t));
+        Element_t *pNewItem = new (struct Element_t);
         pNewItem->value = value;
         pNewItem->pNext = NULL;
         m_pHead = pNewItem;
         return;
     }
 
-    if(value >= m_pHead->value){
-        Element_t *pNewItem = (struct Element_t *)malloc(sizeof(struct Element_t));
+    if (value >= m_pHead->value)
+    {
+        Element_t *pNewItem = new (struct Element_t);
         pNewItem->value = value;
         pNewItem->pNext = m_pHead;
         m_pHead = pNewItem;
         return;
     }
-    struct Element_t *pItem,*pPrevItem;
-    pItem = m_pHead;
-    while (pItem != NULL){
+
+    struct Element_t *pItem = m_pHead, *pPrevItem;
+    while (pItem != NULL)
+    {
         if (value >= pItem->value)
         {
-            Element_t *pNewItem = (struct Element_t *)malloc(sizeof(struct Element_t));
+            Element_t *pNewItem = new (struct Element_t);
             pNewItem->value = value;
             pPrevItem->pNext = pNewItem;
             pNewItem->pNext = pItem;
@@ -89,7 +93,7 @@ void PriorityQueue::Insert(int value)
         pItem = pItem->pNext;
     }
 
-    Element_t *pNewItem = (struct Element_t *)malloc(sizeof(struct Element_t));
+    Element_t *pNewItem = new (struct Element_t);
     pNewItem->value = value;
     pNewItem->pNext = NULL;
     pPrevItem->pNext = pNewItem;
@@ -98,21 +102,25 @@ void PriorityQueue::Insert(int value)
 
 bool PriorityQueue::Remove(int value)
 {
-    if(m_pHead == NULL){
+    if (m_pHead == NULL)
+    {
         return false;
     }
     struct Element_t *pItem = m_pHead;
     struct Element_t *pPrevItem;
 
-    if(value == pItem->value){
+    if (value == pItem->value)
+    {
         m_pHead = pItem->pNext;
-        free(pItem);
+        delete (pItem);
         return true;
     }
-    while (pItem != NULL){
-        if(pItem->value == value){
+    while (pItem != NULL)
+    {
+        if (pItem->value == value)
+        {
             pPrevItem->pNext = pItem->pNext;
-            free(pItem);
+            delete (pItem);
             return true;
         }
         pPrevItem = pItem;
@@ -123,13 +131,16 @@ bool PriorityQueue::Remove(int value)
 
 PriorityQueue::Element_t *PriorityQueue::Find(int value)
 {
-    if(m_pHead == NULL){
+    if (m_pHead == NULL)
+    {
         return NULL;
     }
 
     struct Element_t *pItem = m_pHead;
-    while(pItem != NULL){
-        if(pItem->value == value){
+    while (pItem != NULL)
+    {
+        if (pItem->value == value)
+        {
             return pItem;
         }
         pItem = pItem->pNext;
@@ -140,8 +151,9 @@ PriorityQueue::Element_t *PriorityQueue::Find(int value)
 size_t PriorityQueue::Length()
 {
     struct Element_t *pItem = m_pHead;
-    size_t count=0;
-    while (pItem != NULL){
+    size_t count = 0;
+    while (pItem != NULL)
+    {
         count++;
         pItem = pItem->pNext;
     }
