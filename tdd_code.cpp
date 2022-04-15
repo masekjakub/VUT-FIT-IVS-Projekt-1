@@ -18,20 +18,6 @@
 
 #include "tdd_code.h"
 
-//============================================================================//
-// ** ZDE DOPLNTE IMPLEMENTACI **
-//
-// Zde doplnte implementaci verejneho rozhrani prioritni fronty (Priority Queue)
-// 1. Verejne rozhrani fronty specifikovane v: tdd_code.h (sekce "public:")
-//    - Konstruktor (PriorityQueue()), Destruktor (~PriorityQueue())
-//    - Metody Insert/Remove/Find/GetHead ...
-//    - Pripadne vase metody definovane v tdd_code.h (sekce "protected:")
-//
-// Cilem je dosahnout plne funkcni implementace prioritni fronty implementovane
-// pomoci tzv. "singly linked list", ktera bude splnovat dodane testy
-// (tdd_tests.cpp).
-//============================================================================//
-
 PriorityQueue::PriorityQueue()
 {
     m_pHead = NULL;
@@ -43,48 +29,37 @@ PriorityQueue::~PriorityQueue()
     while (pItem != NULL)
     {
         struct Element_t *tmp = pItem->pNext;
-        delete (pItem);
+        delete pItem;
         pItem = tmp;
     }
 }
 
 void PriorityQueue::Insert(int value)
 {
-    /*struct Element_t *pItem,*pPrevItem;
-    pItem = m_pHead;
-    printf("Curr list");
-    if(m_pHead != NULL)
-    do
-    {
-        printf("%d\n",pItem->value);
-    pItem = pItem->pNext;
-    }while (pItem != NULL);*/
+    Element_t *pNewItem = new (struct Element_t);
+    pNewItem->value = value;
+    pNewItem->pNext = NULL;
 
     if (m_pHead == NULL)
     {
-        Element_t *pNewItem = new (struct Element_t);
-        pNewItem->value = value;
-        pNewItem->pNext = NULL;
         m_pHead = pNewItem;
         return;
     }
 
     if (value >= m_pHead->value)
     {
-        Element_t *pNewItem = new (struct Element_t);
-        pNewItem->value = value;
         pNewItem->pNext = m_pHead;
         m_pHead = pNewItem;
         return;
     }
 
-    struct Element_t *pItem = m_pHead, *pPrevItem;
+    struct Element_t *pItem = m_pHead;
+    struct Element_t *pPrevItem;
+
     while (pItem != NULL)
     {
         if (value >= pItem->value)
         {
-            Element_t *pNewItem = new (struct Element_t);
-            pNewItem->value = value;
             pPrevItem->pNext = pNewItem;
             pNewItem->pNext = pItem;
             return;
@@ -92,10 +67,6 @@ void PriorityQueue::Insert(int value)
         pPrevItem = pItem;
         pItem = pItem->pNext;
     }
-
-    Element_t *pNewItem = new (struct Element_t);
-    pNewItem->value = value;
-    pNewItem->pNext = NULL;
     pPrevItem->pNext = pNewItem;
     return;
 }
@@ -106,21 +77,23 @@ bool PriorityQueue::Remove(int value)
     {
         return false;
     }
+
     struct Element_t *pItem = m_pHead;
     struct Element_t *pPrevItem;
 
     if (value == pItem->value)
     {
         m_pHead = pItem->pNext;
-        delete (pItem);
+        delete pItem;
         return true;
     }
+    
     while (pItem != NULL)
     {
         if (pItem->value == value)
         {
             pPrevItem->pNext = pItem->pNext;
-            delete (pItem);
+            delete pItem;
             return true;
         }
         pPrevItem = pItem;
@@ -137,6 +110,7 @@ PriorityQueue::Element_t *PriorityQueue::Find(int value)
     }
 
     struct Element_t *pItem = m_pHead;
+
     while (pItem != NULL)
     {
         if (pItem->value == value)
@@ -152,6 +126,7 @@ size_t PriorityQueue::Length()
 {
     struct Element_t *pItem = m_pHead;
     size_t count = 0;
+
     while (pItem != NULL)
     {
         count++;
